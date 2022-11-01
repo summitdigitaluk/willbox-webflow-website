@@ -5,7 +5,7 @@ const buildDirectory = 'dist';
 const production = process.env.NODE_ENV === 'production';
 
 // Config entrypoint files
-const entryPoints = ['src/index.ts'];
+const entryPoints = ['src/date-picker.js','src/main.js','src/enquiry.js','src/enquiry-fleet-item.js','src/enquiry-form.js','src/revenue-calculator.js'];
 
 /**
  * Default Settings
@@ -23,6 +23,12 @@ const defaultSettings = {
 // Files building
 if (production) {
   esbuild.build(defaultSettings);
+  esbuild.buildSync({
+    bundle: true,
+    outdir: buildDirectory,
+    minify: production,
+    entryPoints: ['src/main.css'],
+  });
 }
 
 // Files serving
