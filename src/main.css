@@ -62,6 +62,12 @@ td {
   border-color: #f6991d;
   padding-bottom: 3px;
 }
+.nav-link.nav-dropdown:hover .nav-dropdown-wrapper {
+  padding-bottom: 10px;
+}
+.nav-link.nav-dropdown:hover .nav-dropdown-wrapper + .nav-dropdown-container {
+  display: flex;
+}
 /* Mobile Nav */
 .w-nav-overlay {
   background: rgba(1, 37, 80, 0.97);

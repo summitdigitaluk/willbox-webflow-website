@@ -845,6 +845,7 @@ function containerConversionsAndSelfStorage(_setReason, _reason) {
   }
 }
 function generalEnquiry(_setReason) {
+  $('#enquiry-title').html('Get in touch');
   //$('#postcode_billing,#addressline1_billing').removeAttr('required');
   $('#tab-group,#address,#upload-file-show-hide,#items-show-hide').addClass('hidden');
   $('#reason-for-enquiry-show-hide').removeClass('hidden');

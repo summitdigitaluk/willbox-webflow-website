@@ -65,9 +65,26 @@ td {
   border-bottom: 1px solid transparent;
   transition: border-color 200ms ease, padding-bottom 200ms ease;
 }
-.nav-link:hover .nav-menu-text-span {
-  border-color: #f6991d;
-  padding-bottom: 3px;
+.nav-link {
+  &:hover {
+    .nav-menu-text-span {
+      border-color: #f6991d;
+      padding-bottom: 3px;
+    }
+  }
+  &.nav-dropdown {
+    &:hover {
+      .nav-dropdown-wrapper {
+        padding-bottom: 10px;
+        .nav-menu-text-span {
+          
+        }
+        + .nav-dropdown-container {
+          display: flex;
+        }
+      }
+    }
+  }
 }
 
 /* Mobile Nav */
