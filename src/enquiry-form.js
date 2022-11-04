@@ -833,7 +833,11 @@ $('#manual-address-delivery').on('click', function (e) {
 function containerConversionsAndSelfStorage(_setReason, _reason) {
   //$('#postcode_billing,#addressline1_billing').removeAttr('required');
   $('#tab-group,#address,#items-show-hide').addClass('hidden');
-  $('#reason-for-enquiry-show-hide,#upload-file-show-hide').removeClass('hidden');
+  $(
+    '#reason-for-enquiry-show-hide,' +
+    '#upload-file-show-hide'
+  ).removeClass('hidden');
+  $('#label-is-a-company').html('Are you enquiring on behalf of a company?*');
   $('#label-notes').html('Your project requirements');
   $('#notes').attr('placeholder', 'Please provide a brief summary of your project to discuss.');
   if (_setReason === true) {
@@ -849,6 +853,7 @@ function generalEnquiry(_setReason) {
   //$('#postcode_billing,#addressline1_billing').removeAttr('required');
   $('#tab-group,#address,#upload-file-show-hide,#items-show-hide').addClass('hidden');
   $('#reason-for-enquiry-show-hide').removeClass('hidden');
+  $('#label-is-a-company').html('Are you enquiring on behalf of a company?*');
   $('#label-notes').html('Question/Query');
   $('#notes').attr('placeholder', 'Please provide a brief summary of your project to discuss.');
   if (_setReason === true) {
@@ -866,6 +871,7 @@ function hireSales(_setReason) {
       '#address,' +
       '#items-show-hide'
   ).removeClass('hidden');
+  $('#label-is-a-company').html('Are you hiring or purchasing for a company?*');
   $('#label-notes').html('Questions/Queries');
   $('#notes').attr(
     'placeholder',
