@@ -1,4 +1,4 @@
-import { dateObjectToUkDate, isDate, updateEnquiryData, oneDayInSeconds, minHirePeriodInDays, datePickerTemplate } from '$utils/helper-functions';
+import { arrayIsEmpty, dateObjectToUkDate, isDate, updateEnquiryData, oneDayInSeconds, minHirePeriodInDays, datePickerTemplate } from '$utils/helper-functions';
 /*!
  * Datepicker v1.0.10
  * https://fengyuanchen.github.io/datepicker
