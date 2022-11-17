@@ -24,3 +24,19 @@ $('#addEnquiry').on('click', function (e) {
   );
   window.location.reload();
 });
+
+window.addEventListener('load', () => {
+  if (/Mobile|Tablet|Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+    //console.log('Mobile device detected. Do not download ElfSight');
+    $('#elfsight-google-reviews').remove();
+  } else {
+    //console.log('Non-mobile device detected. Download ElfSight');
+    $.getScript('https://apps.elfsight.com/p/platform.js')
+      .done(function (script, textStatus) {
+        //console.log(textStatus);
+      })
+      .fail(function (jqxhr, settings, exception) {
+        $('#elfsight-google-reviews').remove();
+      });
+  }
+});
