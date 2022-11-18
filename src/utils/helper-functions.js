@@ -241,4 +241,19 @@ export const datePickerTemplate = (str) => {
       '</div>' +
     '</div>';
   return template;
-}
+};
+
+export const isDevSite = () => {
+  return window.location.origin.indexOf('webflow.io') > -1 ? true : false;
+};
+
+export const deviceIsMobile = () => {
+  if (
+    /Mobile|Tablet|Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+      navigator.userAgent
+    )
+  ) {
+    return true;
+  }
+  return false;
+};
