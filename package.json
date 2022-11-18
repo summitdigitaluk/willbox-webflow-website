@@ -55,6 +55,7 @@
   "dependencies": {
     "@chenfengyuan/datepicker": "^1.0.10",
     "@finsweet/ts-utils": "^0.33.2",
+    "body-scroll-lock": "4.0.0-beta.0",
     "jquery": "^3.6.1",
     "less": "^4.1.3",
     "owl.carousel": "^2.3.4"

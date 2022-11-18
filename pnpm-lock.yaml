@@ -12,6 +12,7 @@ specifiers:
   '@types/jquery': ^3.5.14
   '@typescript-eslint/eslint-plugin': ^5.39.0
   '@typescript-eslint/parser': ^5.39.0
+  body-scroll-lock: 4.0.0-beta.0
   cross-env: ^7.0.3
   esbuild: ^0.15.10
   eslint: ^8.25.0
@@ -26,6 +27,7 @@ specifiers:
 dependencies:
   '@chenfengyuan/datepicker': 1.0.10_jquery@3.6.1
   '@finsweet/ts-utils': 0.33.2
+  body-scroll-lock: 4.0.0-beta.0
   jquery: 3.6.1
   less: 4.1.3
   owl.carousel: 2.3.4
@@ -933,6 +935,10 @@ packages:
     dependencies:
       is-windows: 1.0.2
     dev: true
+
+  /body-scroll-lock/4.0.0-beta.0:
+    resolution: {integrity: sha512-a7tP5+0Mw3YlUJcGAKUqIBkYYGlYxk2fnCasq/FUph1hadxlTRjF+gAcZksxANnaMnALjxEddmSi/H3OR8ugcQ==}
+    dev: false
 
   /brace-expansion/1.1.11:
     resolution: {integrity: sha512-iCuPHDFgrHX7H2vEI/5xpz07zSHB00TpugqhmYtVmMO6518mCuRMoOYFldEBl0g187ufozdaHgWKcYFb61qGiA==}

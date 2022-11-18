@@ -1,6 +1,78 @@
+//Make sure the content behind the Mega Nav or a modal does not scroll
+import 'body-scroll-lock';
 import 'owl.carousel';
 
-import { arrayIsEmpty, setEnquiryButton, isDevSite, deviceIsMobile } from '$utils/helper-functions';
+import { arrayIsEmpty, setEnquiryButton } from '$utils/helper-functions';
+
+//Click outside current mega nav closes it
+$(document).on('click', function (event) {
+  //console.log($(event.target));
+  //Click outside a currently open mega nav slide to close it (exclude the mega nav background)
+  if (
+    //Mega Nav is open
+    $('.mega-nav-button.active').length &&
+    //Click was outside a '.mega-nav-slide' or WAS on the Mega Nav background
+    (
+      !$(event.target).closest('.mega-nav-slide').length ||
+      $(event.target).closest('.mega-nav-background').length
+    )
+    &&
+    (
+      //Click was not to open a different Mega Nav
+      !$(event.target).closest('.mega-nav-button-inner').length ||
+      //Click was to close currently open Mega Nav
+      ($(event.target).closest('.mega-nav-button-inner').length && $(event.target).closest('.mega-nav-button.active').length)
+    )
+  ) {
+    console.log('Click was outside the Slider');
+    //Get ID of open Mega Nav
+    var id = $('.mega-nav-button.active').find('.mega-nav-slide').attr('id');
+    //Close the Mega Nav
+    $('.mega-nav-button.active').removeClass('active');
+    //Re-enable page scrolling
+    var target = document.getElementById(id);
+    bodyScrollLock.enableBodyScroll(target);
+    $('body').removeClass('fixed');
+  }
+  //Click on button inner when another slide is active opens this slide and closes the active one
+  else if (
+    //Mega Nav is open
+    $('.mega-nav-button.active').length &&
+    //Click was not on the active button
+    !$(event.target).closest('.mega-nav-button.active').length &&
+    //Click was on a Mega Nav button
+    $(event.target).closest('.mega-nav-button-inner').length
+
+  ) {
+    console.log('Open another mega nav');
+    $(event.target).closest('.mega-nav-button').addClass('active').siblings().removeClass('active');
+    //Make the first thumbnail visible
+    $(event.target).closest('.mega-nav-button').find('.mega-nav-image').eq(0).css({'opacity':'1'});
+    //Stop the page scrolling
+    //Get ID of open Mega Nav
+    var id = $('.mega-nav-button.active').find('.mega-nav-slide').attr('id');
+    var target = document.getElementById(id);
+    bodyScrollLock.disableBodyScroll(target);
+    $('body').addClass('fixed');
+  }
+  //Click on button inner when slide is not active opens the slide
+  else if (
+    (!$(event.target).closest('.mega-nav-button.active').length && $(event.target).closest('.mega-nav-button-inner').length)
+    ||
+    (!$(event.target).closest('.mega-nav-button.active').length && $(event.target).closest('.mega-nav-button-inner').length)
+  ) {
+    console.log('Open the mega nav');
+    $(event.target).closest('.mega-nav-button').addClass('active');
+    //Make the first thumbnail visible
+    $(event.target).closest('.mega-nav-button').find('.mega-nav-image').eq(0).css({'opacity':'1'});
+    //Stop the page scrolling
+    //Get ID of open Mega Nav
+    var id = $('.mega-nav-button.active').find('.mega-nav-slide').attr('id');
+    var target = document.getElementById(id);
+    bodyScrollLock.disableBodyScroll(target);
+    $('body').addClass('fixed');
+  }
+});
 
 (function () {
   var enquiryArr = JSON.parse(localStorage.getItem('enquiry'));
@@ -27,61 +99,14 @@ $('#addEnquiry').on('click', function (e) {
   window.location.reload();
 });
 
-//Flag specific files to only load on desktop
-//Flag which files should or should not be cached
-//Add possibility for callbacks
-//Detect which domain currently on and serve the local files if on webflow.io. Ignore if external.
-/*
-Example array
-[{
-  source: 'fileName.js',
-  cache: true,
-  ignoreOnMobile: true,
-  success: example(),
-  fail: anotherExample(),
-}]
-*/
-function loadJsFiles(arr) {
-  const files = arr;
-  //Load JS files from CDN when on https://willbox.summit-digital.co.uk or https://www.willbox.co.uk and locally when not
-  var count = 0;
-  function getScriptsInOrder(_index) {
-    var index = _index ? _index : 0;
-    if (files[index]['ignoreOnMobile'] === true && deviceIsMobile()) {
-      files[index]['fail']();
-    } else {
-      $.ajax({
-        type: 'GET',
-        url:
-          files[index]['source'].indexOf('//') > -1 //File is an externally hosted script
-            ? files[index]['source']
-            : //File is not external so get from jsDelivr or localhost
-            isDevSite() //webflow.io
-            ? 'http://localhost:3000/' + files[index]['source']
-            : 'https://cdn.jsdelivr.net/gh/summitdigitaluk/willbox-webflow-website@1.0.7/dist/' +
-              files[index]['source'],
-        dataType: 'script',
-        cache: isDevSite() ? false : true,
-      })
-        .done(function (script, textStatus) {
-          console.log('textStatus', textStatus);
-          if (files[index]['success'] !== null) files[index]['success']();
-          count += 1;
-          if (count < files.length) {
-            getScriptsInOrder(count);
-          }
-        })
-        .fail(function (jqxhr, settings, exception) {
-          files[index]['fail']();
-        });
-    }
-  }
-  getScriptsInOrder();
-}
-
 loadJsFiles([
   {
     source: 'https://apps.elfsight.com/p/platform.js',
+    condition: () => {
+      if ($('#elfsight-google-reviews').length > 0) {
+        return true;
+      }
+    },
     ignoreOnMobile: true,
     success: null,
     fail: () => {
@@ -89,95 +114,6 @@ loadJsFiles([
     },
   },
 ]);
-
-/*
-
-window.addEventListener('load', () => {
-  if (/Mobile|Tablet|Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
-    //console.log('Mobile device detected. Do not download ElfSight');
-    $('#elfsight-google-reviews').remove();
-  } else {
-    //console.log('Non-mobile device detected. Download ElfSight');
-    $.getScript('https://apps.elfsight.com/p/platform.js')
-      .done(function (script, textStatus) {
-        //console.log(textStatus);
-      })
-      .fail(function (jqxhr, settings, exception) {
-        $('#elfsight-google-reviews').remove();
-      });
-  }
-});
-
-
-
-<!-- Start Accreditations Carousel custom code -->
-<script defer type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
-<script>
-  $('.collection-list-partners.w-dyn-items').owlCarousel({
-    margin: 20,
-    nav: false,
-    items: 4,
-    loop: true,
-    autoWidth: true,
-    center: true,
-    autoplay: true,
-    autoplayHoverPause: true,
-    autoplayTimeout: 3000,
-    autoplaySpeed: 2000
-  });
-</script>
-<!-- End Accreditations Carousel custom code -->
-
-
-
-function loadFiles(arr) {
-  var files = arr;
-  var ms = Date.now();
-  //Load files from Summit website when on https://willbox.summit-digital.co.uk
-  var origin = window.location.origin.indexOf('summit-digital.co.uk') > -1 ? 'external' : 'local';
-  var jsFiles = [];
-  for (let i = 0; i < files.length; i++) {
-    if(files[i].slice(-3).indexOf('.js') > -1) {
-      var src = origin === 'external'
-      	? 'https://cdn.jsdelivr.net/gh/summitdigitaluk/willbox-webflow-website@1.0.3/dist/'
-      	  + files[i]
-          //+ '?v='
-          //+ ms
-      	: 'http://localhost:3000/' + files[i];
-      jsFiles.push(src);
-    }
-    else if(files[i].slice(-4).indexOf('.css') > -1) {
-      var linkEle = document.createElement('link');
-      linkEle.href = origin === 'external'
-        ? 'https://cdn.jsdelivr.net/gh/summitdigitaluk/willbox-webflow-website@1.0.3/dist/'
-          + files[i]
-          //+ '?v='
-          //+ ms
-        : 'http://localhost:3000/' + files[i]; 
-      linkEle.rel = 'stylesheet';
-      linkEle.type = 'text/css';
-      document.head.appendChild(linkEle);
-    }
-  }
-  if (arrayIsEmpty(jsFiles) === false) {
-    var count = 0;
-    function getScriptsInOrder(_index) {
-      var index = _index ? _index : 0;
-      $.getScript(jsFiles[index]).done(function(script,textStatus) {
-        count++;
-        if (count < jsFiles.length) {
-          getScriptsInOrder(count);
-        }
-      });
-    }
-    getScriptsInOrder();
-  }
-}
-/*loadFiles([
-  "main.css"
-]);
-
-*/
 
 $('.collection-list-partners.w-dyn-items').owlCarousel({
   margin: 20,
