@@ -1,4 +1,13 @@
-import { createSelectFromArray, arrayIsEmpty, isDate, dateObjectToUniversalDate, setEnquiryButton } from '$utils/helper-functions';
+//Make sure the content behind the modal does not scroll
+import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
+
+import {
+  createSelectFromArray,
+  arrayIsEmpty,
+  isDate,
+  dateObjectToUniversalDate,
+  setEnquiryButton,
+} from '$utils/helper-functions';
 
 //Global variables
 //var enquiry = $('#enquiry');
@@ -130,20 +139,27 @@ $(document).on('click', '[data-enquiry="add-to-enquiry-modal"]', function (e) {
 function openModal(id) {
   if (document.getElementById(id)) {
     //Stop the page scrolling
-    var target = document.getElementById(id);
-    bodyScrollLock.disableBodyScroll(target);
+    var targetElement = document.getElementById(id);
+    disableBodyScroll(targetElement, {
+      reserveScrollBarGap: true,
+    });
     //Scroll modal body to top if previously scrolled modal on another viewing
-    target.scroll(0, 0);
+    targetElement.scroll(0, 0);
 
     var $modal = $('#' + id);
     $modal.removeClass('closed').addClass('opening').css('display', 'flex');
 
     //Animate the background fading in
-    $modal.find('.modal-background').fadeIn(350);
+    let $modalBg = $modal.find('.modal-background');
+    $modalBg.fadeIn(350);
+
     //Animate the modal opening
     setTimeout(function () {
       $modal.removeClass('opening').addClass('open');
       $('.loading').removeClass('loading');
+      $modalBg.on('click', function () {
+        closeModal(id);
+      });
     }, 350);
   }
 }
@@ -159,8 +175,8 @@ function closeModal(id) {
     setTimeout(function () {
       $modal.removeClass('closing').hide().addClass('closed');
       //Re-enable page scrolling
-      var target = document.getElementById(id);
-      bodyScrollLock.enableBodyScroll(target);
+      var targetElement = document.getElementById(id);
+      enableBodyScroll(targetElement);
     }, 200);
   }
 }
@@ -427,17 +443,17 @@ function productAdded(data) {
 $('#filter-fleet-list').on('click', function (e) {
   e.preventDefault();
   $('#filter-column').fadeIn(200);
-  var target = document.getElementById('filter-column');
-  bodyScrollLock.disableBodyScroll(target);
+  var targetElement = document.querySelector('#filter-column');
+  disableBodyScroll(targetElement);
   //Scroll modal body to top if previously scrolled modal on another viewing
-  target.scroll(0, 0);
+  targetElement.scroll(0, 0);
 });
 
 $('#filter-column-close').on('click', function (e) {
   e.preventDefault();
   $('#filter-column').fadeOut(200);
   setTimeout(function () {
-    var target = document.getElementById('filter-column');
-    bodyScrollLock.enableBodyScroll(target);
+    var targetElement = document.querySelector('#filter-column');
+    enableBodyScroll(targetElement);
   }, 200);
 });

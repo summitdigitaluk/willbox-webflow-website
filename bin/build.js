@@ -5,7 +5,16 @@ const buildDirectory = 'dist';
 const production = process.env.NODE_ENV === 'production';
 
 // Config entrypoint files
-const entryPoints = ['src/date-picker.js','src/main.js','src/enquiry.js','src/enquiry-fleet-item.js','src/enquiry-form.js','src/revenue-calculator.js'];
+const entryPoints = [
+  'src/date-picker.js',
+  'src/main.js',
+  'src/enquiry.js',
+  'src/enquiry-fleet-item.js',
+  'src/enquiry-form.js',
+  'src/revenue-calculator.js',
+  'src/fleet-list.js',
+  'src/index.js',
+];
 
 /**
  * Default Settings
@@ -27,7 +36,7 @@ if (production) {
     bundle: true,
     outdir: buildDirectory,
     minify: production,
-    entryPoints: ['src/main.css'],
+    entryPoints: ['src/main.css', 'src/enquiry.css'],
   });
 }
 

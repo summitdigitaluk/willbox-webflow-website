@@ -1,4 +1,17 @@
-import { arrayIsEmpty, isDate, dateObjectToUkDate, addLeadingZero, checkboxIsChecked, updateEnquiryData, oneDayInSeconds, minHirePeriodInDays, setEnquiryButton, datePickerTemplate } from '$utils/helper-functions';
+import {
+  arrayIsEmpty,
+  isDate,
+  dateObjectToUkDate,
+  addLeadingZero,
+  checkboxIsChecked,
+  updateEnquiryData,
+  oneDayInSeconds,
+  minHirePeriodInDays,
+  setEnquiryButton,
+  datePickerTemplate,
+} from '$utils/helper-functions';
+
+import './date-picker.js';
 
 /*//Load the enquiry
 //If there is an enquiry in local storage use that

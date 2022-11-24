@@ -32,7 +32,7 @@
     "test:headed": "pnpm playwright test --headed",
     "release": "changeset publish",
     "update": "pnpm update -i -L -r",
-    "less": "lessc ./src/less/main.less ./src/main.css"
+    "less": "lessc ./src/less/main.less ./src/main.css; lessc ./src/less/enquiry.less ./src/enquiry.css"
   },
   "devDependencies": {
     "@changesets/changelog-git": "^0.1.13",
@@ -54,6 +54,7 @@
   },
   "dependencies": {
     "@chenfengyuan/datepicker": "^1.0.10",
+    "@finsweet/attributes-cmsfilter": "^1.16.0",
     "@finsweet/ts-utils": "^0.33.2",
     "body-scroll-lock": "4.0.0-beta.0",
     "jquery": "^3.6.1",

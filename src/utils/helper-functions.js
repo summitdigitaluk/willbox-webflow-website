@@ -113,7 +113,7 @@ export const dateObjectToUkDate = (dateObj) => {
 };
 
 //Move items around in an object
-Array.prototype.move = function (from, to) {
+export const moveItemsInObject = (from, to) => {
   this.splice(to, 0, this.splice(from, 1)[0]);
   return this;
 };

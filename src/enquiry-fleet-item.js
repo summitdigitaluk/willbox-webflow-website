@@ -1,5 +1,8 @@
 import { createSelectFromArray } from '$utils/helper-functions';
 
+import './date-picker.js';
+import './enquiry.js';
+
 //Display select field for variants on a Fleet product page
 /*var variantOptions = $('[data-node-type="commerce-add-to-cart-option-select"]').children();
 var variantArr = [];

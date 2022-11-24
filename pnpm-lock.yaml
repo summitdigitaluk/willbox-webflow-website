@@ -4,6 +4,7 @@ specifiers:
   '@changesets/changelog-git': ^0.1.13
   '@changesets/cli': ^2.25.0
   '@chenfengyuan/datepicker': ^1.0.10
+  '@finsweet/attributes-cmsfilter': ^1.16.0
   '@finsweet/eslint-config': ^1.1.5
   '@finsweet/ts-utils': ^0.33.2
   '@finsweet/tsconfig': ^1.1.0
@@ -26,6 +27,7 @@ specifiers:
 
 dependencies:
   '@chenfengyuan/datepicker': 1.0.10_jquery@3.6.1
+  '@finsweet/attributes-cmsfilter': 1.16.0
   '@finsweet/ts-utils': 0.33.2
   body-scroll-lock: 4.0.0-beta.0
   jquery: 3.6.1
@@ -528,6 +530,12 @@ packages:
     transitivePeerDependencies:
       - supports-color
     dev: true
+
+  /@finsweet/attributes-cmsfilter/1.16.0:
+    resolution: {integrity: sha512-/4TI7CG9CyV6qjazaVxfjnG8lPYUiLvCdRuDo3xPpWDBkBYYQRXVNmeifHkGYtcAFICFO/nLQz3jgMSkaZfAUA==}
+    dependencies:
+      just-debounce: 1.1.0
+    dev: false
 
   /@finsweet/eslint-config/1.1.5_gvjfps2ukeptzzpv6hvdxkdtbu:
     resolution: {integrity: sha512-ukW0qLMhup26nCjLwLKv+b6p4OjJ682zxUkCcqwzTvz1OoVqOphFOdFlnfcFUbZDQhPyv5N8LN5U+vwP6ejvow==}
@@ -2190,6 +2198,10 @@ packages:
     optionalDependencies:
       graceful-fs: 4.2.10
     dev: true
+
+  /just-debounce/1.1.0:
+    resolution: {integrity: sha512-qpcRocdkUmf+UTNBYx5w6dexX5J31AKK1OmPwH630a83DdVVUIngk55RSAiIGpQyoH0dlr872VHfPjnQnK1qDQ==}
+    dev: false
 
   /kind-of/6.0.3:
     resolution: {integrity: sha512-dcS1ul+9tmeD95T+x28/ehLgd9mENa3LsvDTtzm3vyBEO7RPptvAD+t44WVXaUjTBRcrpFeFlC8WCruUR456hw==}
