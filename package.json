@@ -32,7 +32,7 @@
     "test:headed": "pnpm playwright test --headed",
     "release": "changeset publish",
     "update": "pnpm update -i -L -r",
-    "less": "lessc ./src/less/main.less ./src/main.css; lessc ./src/less/enquiry.less ./src/enquiry.css"
+    "less": "lessc ./src/less/main.less ./src/main.css; lessc ./src/less/enquiry.less ./src/enquiry.css; lessc ./src/less/elfsight.less ./src/elfsight.css"
   },
   "devDependencies": {
     "@changesets/changelog-git": "^0.1.13",

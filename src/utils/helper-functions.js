@@ -113,9 +113,9 @@ export const dateObjectToUkDate = (dateObj) => {
 };
 
 //Move items around in an object
-export const moveItemsInObject = (from, to) => {
-  this.splice(to, 0, this.splice(from, 1)[0]);
-  return this;
+export const moveItemsInObject = (arr, from, to) => {
+  arr.splice(to, 0, arr.splice(from, 1)[0]);
+  return arr;
 };
 
 export const checkboxIsChecked = ($jQueryObj) => {
@@ -253,6 +253,14 @@ export const deviceIsMobile = () => {
       navigator.userAgent
     )
   ) {
+    return true;
+  }
+  return false;
+};
+
+export const isInAModal = ($ele) => {
+  if ($ele.closest('.modal').length) {
+    console.log('in a modal');
     return true;
   }
   return false;

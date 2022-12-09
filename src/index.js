@@ -18,8 +18,8 @@ function loadFiles(_options) {
     console.log('Please format loadFiles() options correctly');
     return;
   }
-  var count = 0;
-  let cdnUrl = 'https://cdn.jsdelivr.net/gh/summitdigitaluk/willbox-webflow-website@1.0.10/dist/';
+  let count = 0;
+  const cdnUrl = 'https://cdn.jsdelivr.net/gh/summitdigitaluk/willbox-webflow-website@1.0.10/dist/';
   const files = _options['files'];
 
   //Check which options have been specified
@@ -37,8 +37,8 @@ function loadFiles(_options) {
         }
       };
 
-      var index = _index ? _index : 0;
-      var file = files[index];
+      let index = _index ? _index : 0;
+      let file = files[index];
       const url = file.hasOwnProperty('url') ? file['url'] : false;
       const elementMustExist = file.hasOwnProperty('elementMustExist') ? file['elementMustExist'] : false;
       const elementExists = elementMustExist !== false ? ($(elementMustExist).length > 0 ? true : false) : true;
@@ -64,7 +64,7 @@ function loadFiles(_options) {
           return cdnUrl + url;
         };
         if (url.slice(-4).indexOf('.css') > -1) {
-          var linkEle = document.createElement('link');
+          let linkEle = document.createElement('link');
           linkEle.href = fileUrl();
           linkEle.rel = 'stylesheet';
           linkEle.type = 'text/css';
@@ -81,11 +81,11 @@ function loadFiles(_options) {
               getNextFile();
             } else {
               if (globalScrollTrigger !== false || scrollTrigger !== false) {
-                var observerScrollTrigger =
+                let observerScrollTrigger =
                   globalScrollTrigger !== false
                     ? document.querySelectorAll(globalScrollTrigger)
                     : document.querySelectorAll(scrollTrigger);
-                var config = {
+                let config = {
                   rootMargin:
                     globalScrollTriggerRootMargin !== false
                       ? globalScrollTriggerRootMargin
@@ -94,7 +94,7 @@ function loadFiles(_options) {
                       : '0px 0px 50px 0px',
                   threshold: 0,
                 };
-                var observer = new IntersectionObserver(function (entries, self) {
+                let observer = new IntersectionObserver(function (entries, self) {
                   entries.forEach(function (entry) {
                     if (entry.isIntersecting) {
                       $.ajax({
@@ -146,6 +146,8 @@ function loadFiles(_options) {
                   });
               }
             }
+          } else {
+            getNextFile();
           }
         }
       } else {
@@ -162,9 +164,20 @@ loadFiles({
       url: 'main.js',
     },
     {
+      url: 'https://cdn.jsdelivr.net/npm/@finsweet/attributes-cmsslider@1/cmsslider.js',
+      elementMustExist: '.slider-testimonials',
+      scrollTrigger: '.slider-testimonials',
+      success: () => {
+        setTimeout(function () {
+          $(window).trigger('resize');
+        }, 100);
+      },
+    },
+    {
       url: 'https://apps.elfsight.com/p/platform.js',
       elementMustExist: '#elfsight-google-reviews',
       scrollTrigger: '#elfsight-google-reviews',
+      scrollTriggerRootMargin: '50% 0px 0px 0px',
       ignoreOnMobile: true,
       loader: true,
       fail: () => {

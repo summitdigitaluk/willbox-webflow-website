@@ -9,6 +9,8 @@ import {
   minHirePeriodInDays,
   setEnquiryButton,
   datePickerTemplate,
+  moveItemsInObject,
+  objectLength,
 } from '$utils/helper-functions';
 
 import './date-picker.js';
@@ -324,7 +326,7 @@ function disableInput(num) {
       }
       let totalLength = enquiryArr.length;
 
-      enquiryArr.move(storedNumber, totalLength).join(',');
+      moveItemsInObject(enquiryArr, storedNumber, totalLength).join(',');
       enquiryArr.pop();
 
       localStorage.setItem('enquiry', JSON.stringify(enquiryArr));
@@ -472,11 +474,19 @@ $('input[name="is_a_company"]').on('change', function () {
   if ($(this).val() === 'YES') {
     $('#company_name').attr('required', true);
     $('#know-account-num-show-hide,#vat-registered-show-hide').addClass('hidden');
-    $('#company-details-show-hide').removeClass('hidden');
+    $(
+      '#company-details-show-hide, #company-name-billing-show-hide, #company-name-delivery-show-hide'
+    ).removeClass('hidden');
     initSmoothScrolling('#company-details-show-hide');
   } else {
     $('#company_name').removeAttr('required').val('');
     $('#company-details-show-hide').addClass('hidden');
+    if ($('#company_name_billing').val() !== '') {
+      $('#company-name-billing-show-hide').addClass('hidden');
+    }
+    if ($('#company_name_delivery').val() !== '') {
+      $('#company-name-delivery-show-hide').addClass('hidden');
+    }
   }
 });
 
@@ -544,64 +554,66 @@ $('.tab-group-tab').on('click', function (e) {
 });
 
 //Highlight the tabs on page scroll
-let oldValue = 0;
-let newValue = 0;
-var scrollingUp = false;
-var scrollingDown = false;
-window.addEventListener('scroll', (e) => {
-  newValue = window.pageYOffset;
-  if (oldValue < newValue) {
-    //console.log("Page going up");
-    scrollingUp = false;
-    scrollingDown = true;
-  } else if (oldValue > newValue) {
-    //console.log("Page going down");
-    scrollingUp = true;
-    scrollingDown = false;
-  }
-  oldValue = newValue;
-});
-var rootMarginTop =
-  $('#navigation').css('position') === 'static'
-    ? ($('.tab-group').eq(0).outerHeight(false) + 30 - 59) * -1
-    : ($('#navigation').outerHeight(false) + $('.tab-group').eq(0).outerHeight(false) + 30 - 59) *
-      -1;
-var observer = new IntersectionObserver(
-  function (entries) {
-    entries.forEach(function (entry) {
-      if (entry.isIntersecting) {
-        if (scrollingUp) {
-          var id = entry.target.id;
-          var $allTabs = $('.tab-group-tab');
-          var $tab = $('.tab-group-tab[href="#' + id + '"]');
-          var $nextTab = $('.tab-group-tab[href="#' + id + '"]').parent().next().find('.tab-group-tab');
-          if ($nextTab.hasClass('active')) {
-            $allTabs.removeClass('active');
-            $tab.addClass('active');
+(function () {
+  let oldValue = 0;
+  let newValue = 0;
+  var scrollingUp = false;
+  var scrollingDown = false;
+  window.addEventListener('scroll', (e) => {
+    newValue = window.pageYOffset;
+    if (oldValue < newValue) {
+      //console.log("Page going up");
+      scrollingUp = false;
+      scrollingDown = true;
+    } else if (oldValue > newValue) {
+      //console.log("Page going down");
+      scrollingUp = true;
+      scrollingDown = false;
+    }
+    oldValue = newValue;
+  });
+  var rootMarginTop =
+    $('#navigation').css('position') === 'static'
+      ? ($('.tab-group').eq(0).outerHeight(false) + 30 - 59) * -1
+      : ($('#navigation').outerHeight(false) + $('.tab-group').eq(0).outerHeight(false) + 30 - 59) *
+        -1;
+  var observer = new IntersectionObserver(
+    function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          if (scrollingUp) {
+            var id = entry.target.id;
+            var $allTabs = $('.tab-group-tab');
+            var $tab = $('.tab-group-tab[href="#' + id + '"]');
+            var $nextTab = $('.tab-group-tab[href="#' + id + '"]').parent().next().find('.tab-group-tab');
+            if ($nextTab.hasClass('active')) {
+              $allTabs.removeClass('active');
+              $tab.addClass('active');
+            }
+          }
+        } else {
+          if (scrollingDown) {
+            var id = entry.target.id;
+            var $allTabs = $('.tab-group-tab');
+            var $tab = $('.tab-group-tab[href="#' + id + '"]');
+            if ($tab.hasClass('active') && $tab.parent().index() !== $allTabs.length - 1) {
+              $allTabs.removeClass('active');
+              $tab.parent().next().find('.tab-group-tab').addClass('active');
+            }
           }
         }
-      } else {
-        if (scrollingDown) {
-          var id = entry.target.id;
-          var $allTabs = $('.tab-group-tab');
-          var $tab = $('.tab-group-tab[href="#' + id + '"]');
-          if ($tab.hasClass('active') && $tab.parent().index() !== $allTabs.length - 1) {
-            $allTabs.removeClass('active');
-            $tab.parent().next().find('.tab-group-tab').addClass('active');
-          }
-        }
-      }
-    });
-  },
-  {
-    root: null,
-    rootMargin: rootMarginTop + 'px 0px 0px 0px',
-    threshold: 0.25,
-  }
-);
-document.querySelectorAll('.tab-section').forEach(function (ele) {
-  observer.observe(ele);
-});
+      });
+    },
+    {
+      root: null,
+      rootMargin: rootMarginTop + 'px 0px 0px 0px',
+      threshold: 0.25,
+    }
+  );
+  document.querySelectorAll('.tab-section').forEach(function (ele) {
+    observer.observe(ele);
+  });
+})();
 
 //Submit enquiry
 $('#wf-form-enquiry').on('submit', function (e) {
@@ -620,10 +632,10 @@ $('#wf-form-enquiry').on('submit', function (e) {
     selectedReason === 'General Enquiry'
   ) {
     var inputsToValidate = [
-      { 'id': 'email_address', 'message': 'Please enter an email address' },
-      { 'id': 'phone_number', 'message': 'Please enter a phone number' },
-      { 'id': 'last_name', 'message': 'Please enter a last name' },
-      { 'id': 'first_name', 'message': 'Please enter a first name' }
+      { id: 'email_address', message: 'Please enter an email address' },
+      { id: 'phone_number', message: 'Please enter a phone number' },
+      { id: 'last_name', message: 'Please enter a last name' },
+      { id: 'first_name', message: 'Please enter a first name' },
     ];
     $.each(inputsToValidate, function (index, value) {
       if (!$('#' + value.id).val()) {
@@ -641,12 +653,12 @@ $('#wf-form-enquiry').on('submit', function (e) {
   } else {
     //Must be a Hire/Sales enquiry
     var inputsToValidate = [
-      { 'id': 'postcode_billing', 'message': 'Please enter a billing postcode' },
-      { 'id': 'addressline1_billing', 'message': 'Please enter a billing address' },
-      { 'id': 'email_address', 'message': 'Please enter an email address' },
-      { 'id': 'phone_number', 'message': 'Please enter a phone number' },
-      { 'id': 'last_name', 'message': 'Please enter a last name' },
-      { 'id': 'first_name', 'message': 'Please enter a first name' }
+      { id: 'postcode_billing', message: 'Please enter a billing postcode' },
+      { id: 'addressline1_billing', message: 'Please enter a billing address' },
+      { id: 'email_address', message: 'Please enter an email address' },
+      { id: 'phone_number', message: 'Please enter a phone number' },
+      { id: 'last_name', message: 'Please enter a last name' },
+      { id: 'first_name', message: 'Please enter a first name' },
     ];
     $.each(inputsToValidate, function (index, value) {
       if (!$('#' + value.id).val()) {
@@ -695,8 +707,8 @@ $('#wf-form-enquiry').on('submit', function (e) {
       } else {
         //Validate that the first line and postcode have a value
         var inputsToValidate = [
-          { 'id': 'postcode_delivery', 'message': 'Please enter a delivery postcode' },
-          { 'id': 'addressline1_delivery', 'message': 'Please enter a delivery address' }
+          { id: 'postcode_delivery', message: 'Please enter a delivery postcode' },
+          { id: 'addressline1_delivery', message: 'Please enter a delivery address' },
         ];
         $.each(inputsToValidate, function (index, value) {
           if (!$('#' + value.id).val()) {
@@ -742,8 +754,8 @@ $('#wf-form-enquiry').on('submit', function (e) {
     if (document.getElementById('enquiry_data').value !== '') {
       var data = JSON.parse(document.getElementById('enquiry_data').value);
       var output = {
-        "hire": [],
-        "purchase": []
+        hire: [],
+        purchase: []
       };
       for (var i = 0; i < data.length; i++) {
         var item = data[i];
@@ -807,23 +819,25 @@ $('#wf-form-enquiry').on('submit', function (e) {
       }
     } else {
       document.getElementById('enquiry_data').remove();
+      console.log('Removed enquiry input');
     }
     /* END ADD ENQUIRY DATA IN TEXTAREAS */
     //Clear the stored enquiry
-    enquiryArr = [];
+    let enquiryArr = [];
     localStorage.setItem('enquiry', JSON.stringify(enquiryArr));
     //Clear the stored dates
-    defaultDates = [];
+    let defaultDates = [];
     localStorage.setItem('selectedDates', JSON.stringify(defaultDates));
     //Reset the enquiry button status
     setEnquiryButton('get-a-quote');
     //Set the form name so that it submits to the correct table in the Webflow Dashboard
     selectedReason = selectedReason.replace('/', ' or ');
     $('#wf-form-enquiry').attr('data-name', selectedReason).attr('aria-label', selectedReason);
-    /*alert('This form is valid... apparently');
-    return false;*/
+    console.log(selectedReason);
+    alert('This form is valid... apparently');
+    return false;
     //SUBMIT
-    return true;
+    //return true;
   }
   alert('This form is not valid');
   //STOP SUBMIT
@@ -1087,7 +1101,7 @@ function initSmoothScrolling(_target) {
 }
 initSmoothScrolling();
 
-/* Postcoder | Potcode Lookup */
+/* Postcoder | Postcode Lookup */
 class PostcoderAutocomplete {
   constructor(t) {
     (this.config = t), this.init();
@@ -1218,6 +1232,15 @@ class PostcoderAutocomplete {
     for (let e = 0; e < s.length; e++) {
       let i = this.config[s[e]];
       void 0 !== i && "" !== i && (document.querySelector(i).value = void 0 !== t[s[e]] ? t[s[e]] : "");
+      console.log('i', i);
+      console.log('t[s[e]]', t[s[e]]);
+      if ($('input[name="is_a_company"]').val() === 'YES') {
+        if (i === '#company_name_billing' || i === '#company_name_delivery') {
+          $('#company-name-billing-show-hide, #company-name-delivery-show-hide').removeClass(
+            'hidden'
+          );
+        }
+      }
     }
   };
   handleDocumentClick = (t) => {

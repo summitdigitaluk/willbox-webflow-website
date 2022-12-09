@@ -36,7 +36,7 @@ if (production) {
     bundle: true,
     outdir: buildDirectory,
     minify: production,
-    entryPoints: ['src/main.css', 'src/enquiry.css'],
+    entryPoints: ['src/main.css', 'src/enquiry.css', 'src/elfsight.css'],
   });
 }
 

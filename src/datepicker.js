@@ -1,3 +1,6 @@
+import {
+  isInAModal
+} from '$utils/helper-functions';
 /*!
  * NOTE
  * This is a modified version of datepicker to remove the jquery dependency as it is included with Webflow
@@ -1367,7 +1370,7 @@
             options = this.options,
             $picker = this.$picker;
         var containerWidth = $(document).outerWidth();
-        var containerHeight = $(document).outerHeight();
+        var containerHeight = isInAModal($this) === true ? $this.closest('.modal').outerHeight() : $(document).outerHeight();
         var elementWidth = $this.outerWidth();
         var elementHeight = $this.outerHeight();
         var width = $picker.width();
@@ -1383,6 +1386,20 @@
         if (isNaN(offset)) {
           offset = 10;
         }
+
+        // console.log('top',top);
+        // console.log('height',height);
+        // console.log('elementHeight + height',elementHeight + height);
+        // console.log('containerHeight',containerHeight);
+        // console.log('offset',offset);
+        // console.log('containerWidth',containerWidth);
+        // console.log('elementWidth',elementWidth);
+        // console.log('elementHeight',elementHeight);
+        // console.log('width',width);
+        // console.log('height',height);
+        // console.log('$this',$this);
+        // console.log('options',options);
+        // console.log('$picker',$picker);
 
         if (top > height && top + elementHeight + height > containerHeight) {
           top -= height + offset;

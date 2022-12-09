@@ -330,8 +330,8 @@ $('[data-enquiry="add-to-enquiry"]').on('click', function (e) {
                     obj['qty'] = newQty;
                     localStorage.setItem('enquiry', JSON.stringify(enquiryArr));
                     closeModal('add-to-enquiry');
-                    //updateRibbon({"id":id,"qty":newQty});
-                    productAdded({ "name": name, "img": img, "variant": variant });
+                    //updateRibbon({id:id,qty:newQty});
+                    productAdded({ name: name, img: img, variant: variant });
                   }
                 } else {
                   //console.log('This product is already in the enquiry, increase the qty');
@@ -341,8 +341,8 @@ $('[data-enquiry="add-to-enquiry"]').on('click', function (e) {
                   obj['qty'] = newQty;
                   localStorage.setItem('enquiry', JSON.stringify(enquiryArr));
                   closeModal('add-to-enquiry');
-                  //updateRibbon({"id":id,"qty":newQty});
-                  productAdded({ "name": name, "img": img, "variant": variant });
+                  //updateRibbon({id:id,qty:newQty});
+                  productAdded({ name: name, img: img, variant: variant });
                 }
               }
             }
@@ -355,64 +355,64 @@ $('[data-enquiry="add-to-enquiry"]').on('click', function (e) {
       //Add item to billing array
       if (billing === 'hire') {
         var item = {
-          "billing": billing,
-          "id":
+          billing: billing,
+          id:
             selectedDates[0] && selectedDates[1]
               ? name.toLowerCase().replace(/[^\w]/g, '') + variant.toLowerCase().replace(/[^\w]/g, '') + 'startdate' + dateObjectToUniversalDate(selectedDates[0]) + 'enddate' + dateObjectToUniversalDate(selectedDates[1])
               : name.toLowerCase().replace(/[^\w]/g, '') + variant.toLowerCase().replace(/[^\w]/g, '') + 'noselecteddates',
-          "name": name,
-          "img": img,
-          "variant": variant,
-          "qty": qty,
-          "selectedDates": selectedDates[0] && selectedDates[1] ? selectedDates : []
+          name: name,
+          img: img,
+          variant: variant,
+          qty: qty,
+          selectedDates: selectedDates[0] && selectedDates[1] ? selectedDates : [],
         };
       } else {
         var item = {
-          "billing": billing,
-          "id": name.toLowerCase().replace(/[^\w]/g, '') + variant.toLowerCase().replace(/[^\w]/g, ''),
-          "name": name,
-          "img": img,
-          "variant": variant,
-          "qty": qty
+          billing: billing,
+          id: name.toLowerCase().replace(/[^\w]/g, '') + variant.toLowerCase().replace(/[^\w]/g, ''),
+          name: name,
+          img: img,
+          variant: variant,
+          qty: qty,
         };
       }
       enquiryArr.push(item);
       localStorage.setItem('enquiry', JSON.stringify(enquiryArr));
       closeModal('add-to-enquiry');
       //addToRibbon(item);
-      productAdded({ "name": name, "img": img, "variant": variant });
+      productAdded({ name: name, img: img, variant: variant });
     }
   } else {
     //Array is empty so no products exist in enquiry
     //Add item to billing array
     if (billing === 'hire') {
       var item = {
-        "billing": billing,
-        "id":
+        billing: billing,
+        id:
           selectedDates[0] && selectedDates[1]
             ? name.toLowerCase().replace(/[^\w]/g, '') + variant.toLowerCase().replace(/[^\w]/g, '') + 'startdate' + dateObjectToUniversalDate(selectedDates[0]) + 'enddate' + dateObjectToUniversalDate(selectedDates[1])
             : name.toLowerCase().replace(/[^\w]/g, '') + variant.toLowerCase().replace(/[^\w]/g, '') + 'noselecteddates',
-        "name": name,
-        "img": img,
-        "variant": variant,
-        "qty": qty,
-        "selectedDates": selectedDates[0] && selectedDates[1] ? selectedDates : []
+        name: name,
+        img: img,
+        variant: variant,
+        qty: qty,
+        selectedDates: selectedDates[0] && selectedDates[1] ? selectedDates : [],
       };
     } else {
       var item = {
-        "billing": billing,
-        "id": name.toLowerCase().replace(/[^\w]/g, '') + variant.toLowerCase().replace(/[^\w]/g, ''),
-        "name": name,
-        "img": img,
-        "variant": variant,
-        "qty": qty
+        billing: billing,
+        id: name.toLowerCase().replace(/[^\w]/g, '') + variant.toLowerCase().replace(/[^\w]/g, ''),
+        name: name,
+        img: img,
+        variant: variant,
+        qty: qty,
       };
     }
     enquiryArr.push(item);
     localStorage.setItem('enquiry', JSON.stringify(enquiryArr));
     closeModal('add-to-enquiry');
     //addToRibbon(item);
-    productAdded({ "name": name, "img": img, "variant": variant });
+    productAdded({ name: name, img: img, variant: variant });
   }
   $(this).html('<span class="button-text icon-check">Added</span>');
   //console.log(localStorage.getItem('enquiry'));
