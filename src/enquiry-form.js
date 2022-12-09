@@ -833,11 +833,11 @@ $('#wf-form-enquiry').on('submit', function (e) {
     //Set the form name so that it submits to the correct table in the Webflow Dashboard
     selectedReason = selectedReason.replace('/', ' or ');
     $('#wf-form-enquiry').attr('data-name', selectedReason).attr('aria-label', selectedReason);
-    console.log(selectedReason);
-    alert('This form is valid... apparently');
-    return false;
+    //console.log(selectedReason);
+    /*alert('This form is valid... apparently');
+    return false;*/
     //SUBMIT
-    //return true;
+    return true;
   }
   alert('This form is not valid');
   //STOP SUBMIT

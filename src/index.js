@@ -19,7 +19,7 @@ function loadFiles(_options) {
     return;
   }
   let count = 0;
-  const cdnUrl = 'https://cdn.jsdelivr.net/gh/summitdigitaluk/willbox-webflow-website@1.0.10/dist/';
+  const cdnUrl = 'https://cdn.jsdelivr.net/gh/summitdigitaluk/willbox-webflow-website@1.0.11/dist/';
   const files = _options['files'];
 
   //Check which options have been specified
